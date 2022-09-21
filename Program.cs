@@ -172,10 +172,10 @@ class Banca
             Console.WriteLine("ID: {0}", loan.Id);
             Console.WriteLine("Nome e cognome: {0}", loan.User.Name + " " + loan.User.Surname);
             Console.WriteLine("Importo del prestito: {0}", loan.Amount);
-            Console.WriteLine("Importo rate: {0}", loan.Flat);
+            Console.WriteLine("Importo rate: {0}", Math.Round(loan.Flat,2));
             Console.WriteLine("Data sottoscrizione: {0}", loan.Start);
             Console.WriteLine("Data di scadenza: {0}", loan.End);
-            Console.WriteLine("Numero rate: {0}", Loan.FlatsNumber(Banca.loans, loan.User));
+            Console.WriteLine("Numero rate: {0}", Loan.FlatsNumber(loan.End, loan.Start));
             Console.WriteLine("---------------");
         }
     }

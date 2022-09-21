@@ -15,26 +15,17 @@ class Loan
         Id = Loan.lastId++;
         User = user;
         Amount = amount;
-        Flat = amount / FlatsNumber(Banca.loans, user); // la rata è uguale a importo diviso numero di rate
+        Flat = amount / FlatsNumber( end, start); // la rata è uguale a importo diviso numero di rate
         Start = start;
         End = end;
     }
 
     // calcolo numero di rate
-    public static int FlatsNumber(List<Loan> loans, User user)
+    public static int FlatsNumber(DateTime dateEnd, DateTime dateStart)
     {
-        int flatsNumber = -1;
-        foreach (Loan loan in loans)
-        {
-            if (loan.User == user)
-            {
-                DateTime date2 = loan.Start;
-                DateTime date1 = loan.End;
-
-
-                return flatsNumber = ((date1.Year - date2.Year) * 12) + (date1.Month - date2.Month);
-            }
-        }
-        return flatsNumber;
+        int flatsNumber;
+        
+        return flatsNumber = ((dateEnd.Year - dateStart.Year) * 12) + (dateEnd.Month - dateStart.Month);
+           
     }
 }
