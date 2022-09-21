@@ -1,23 +1,30 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using System;
 using System.ComponentModel.Design;
 using System.Linq;
 using System.Net.Http.Headers;
 
-Console.WriteLine("Hello, World!");
 Banca B = new Banca();
 
 
 Menu:
+Console.WriteLine();
+Console.WriteLine();
+Console.WriteLine();
 Console.WriteLine("Azioni:");
 Console.WriteLine("1. Aggiungi Utente:");
 Console.WriteLine("2. Modifica Utente:");
 Console.WriteLine("3. Cerca Utente");
 Console.WriteLine("4. Aggiungi Prestito");
 Console.WriteLine("5. Cerca Prestito");
+Console.WriteLine("6. Visualizza totale prestiti di un cliente");
+Console.WriteLine("7. Visualizza tabella prestiti cliente");
+
 Console.WriteLine("11 test");
 int input = Convert.ToInt32(Console.ReadLine());
 switch(input){
     case 1:
+        Console.Clear();
         Console.WriteLine("Inserisci il nome:");
         string name = Console.ReadLine();
         Console.WriteLine("Inserisci il cognome");
@@ -31,18 +38,24 @@ switch(input){
         goto Menu;
 
     case 2:
+        Console.Clear();
+
         Console.WriteLine("Inserisc il codicer fiascale dell'utente da modificare");
         string inputFiscalCode = Console.ReadLine();
         B.ModifyUser(B.GetUser(inputFiscalCode));
         goto Menu;
 
     case 3:
+        Console.Clear();
+
         Console.WriteLine("Inserisc il codice fiscale dell'utente da cercare");
         string inputSearch = Console.ReadLine();
         B.Print(B.GetUser(inputSearch));
         goto Menu;
 
     case 4:
+        Console.Clear();
+
         Console.WriteLine("Per quale utente vuoi inserire il prestito? Inserisci il codice Fiscale");
         string fiscalCode = Console.ReadLine().ToUpper();
         User userToLoan = B.GetUser(fiscalCode);
@@ -57,10 +70,28 @@ switch(input){
         goto Menu;
 
     case 5:
+        Console.Clear();
+
         Console.WriteLine("inserisci il codice fiscale dell'utente");
         fiscalCode = Console.ReadLine().ToUpper();
         B.Print(B.GetLoan(fiscalCode));
-        break;
+        goto Menu;
+
+    case 6:
+        Console.Clear();
+
+        Console.WriteLine("Inserisci il codice fiscale dell'utente");
+        fiscalCode = Console.ReadLine().ToUpper();
+        Console.WriteLine(B.GetTotalUserLoans(B.GetUser(fiscalCode)));
+        goto Menu;
+    
+    case 7:
+        Console.Clear();
+
+        Console.WriteLine("Inserisci il codice fiscale dell'utente");
+        fiscalCode = Console.ReadLine().ToUpper();
+        B.LoanTable(B.GetUser(fiscalCode));
+        goto Menu;
     
     case 11:
 
@@ -181,5 +212,34 @@ class Banca
     }
 
 
+    public double GetTotalUserLoans(User user)
+    {
+        double total = 0;
+        foreach (Loan loan in Banca.loans)
+        {
+            if(loan.User.FiscalCode == user.FiscalCode)
+            {
+                total += loan.Amount;
+            }
+        }
+        return total;
+    }
+
+    public void LoanTable(User user)
+    {
+        Print(user);
+        Console.WriteLine();
+        Console.WriteLine(String.Format("|{0,15}|{1,15}|{2,15}|{3,15}|{4,15}|", "ID", "Importo", "Rata", "Data Inizio", "Data Fine"));
+        Console.WriteLine(String.Format("|{0,15}|{1,15}|{2,15}|{3,15}|{4,15}|", "", "", "", " ", " "));
+        foreach (Loan loan in Banca.loans)
+        {
+            if (loan.User.FiscalCode == user.FiscalCode)
+            {
+                Console.WriteLine(String.Format("|{0,15}|{1,15}|{2,15}|{3,15}|{4,15}|", loan.Id, loan.Amount, Math.Round(loan.Flat, 2), loan.Start.ToShortDateString(), loan.End.ToShortDateString()));
+                Console.WriteLine(String.Format("|{0,15}|{1,15}|{2,15}|{3,15}|{4,15}|", "", "", "", " ", " "));
+
+            }
+        }
+    }
 
 }
